@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
+    <title>Peduardo. - Links</title>
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #faf6f0;
+            font-family: 'Nunito';
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 480px;
+            width: 100%;
+        }
+
+        .profile {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #6e2830;
+            margin-bottom: 16px;
+            object-fit: cover;
+            background-color: #e0d8cc;
+        }
+
+        .name {
+            font-size: 28px;
+            font-weight: 600;
+            color: #2d2d2d;
+            margin-bottom: 24px;
+            font-family: 'Fraunces';
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .social-circle {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background-color: #6e2830;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #faf6f0;
+            font-weight: 600;
+            font-size: 24px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .social-circle img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
+        .social-circle:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 12px rgba(110, 40, 48, 0.3);
+        }
+
+        .book-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .book-card {
+            background-color: white;
+            border-radius: 16px;
+            border: 1px solid #cbcbcb;
+            padding: 20px;
+            display: flex;
+            gap: 16px;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .book-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(110, 40, 48, 0.15);
+        }
+
+        .book-cover {
+            width: 100px;
+            border-radius: 8px;
+            color: #faf6f0;
+            font-size: 12px;
+            text-align: center;
+        }
+        .book-cover img {
+            width: 100%;
+        }
+
+        .book-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .playlist img {
+            width: 25px;
+            height: 25px;
+        }
+
+        .book-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d2d2d;
+            margin-bottom: 8px;
+        }
+
+        .book-link {
+            font-size: 14px;
+            color: #6e2830;
+            font-weight: 500;
+            margin-top: auto;
+            align-self: flex-end;
+            border: 1px solid #cbcbcb;
+            text-decoration: none;
+            padding: 4px 10px;
+            border-radius: 10px;
+        }
+
+        .book-link:hover {
+            background-color: #6e2830;
+            color: white;
+        }
+
+        .book-desc, .book-tags {
+            margin-bottom: 8px;
+        }
+
+        .book-tags {
+            font-size: smaller;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="profile">
+            <img src="assets/img/perfil-foto.jpg" alt="Foto de perfil" class="profile-pic">
+            <div class="name">Peduardo.</div>
+        </div>
+
+        <div class="social-links">
+            <a href="https://instagram.com/autorpeduardo" target="_blank" class="social-circle" title="Instagram">
+                <img src="assets/img/insta.png" alt="Instagram">
+            </a>
+
+            <a href="https://tiktok.com/@autorpeduardo" target="_blank" class="social-circle" title="TikTok">
+                <img src="assets/img/tkk.png" alt="TikTok">
+            </a>
+
+            <a href="https://wattpad.com/user/autorpeduardo" target="_blank" class="social-circle" title="Wattpad">
+                <img src="assets/img/wattpad.png" alt="Wattpad">
+            </a>
+        </div>
+
+        <div class="book-card">
+
+            <div class="book-cover">
+                <img src="assets/obras/Capa-BelaMaldição.jpg" alt="Capa do livro Bela Maldição">
+            </div>
+
+            <div class="book-info">
+
+                <div class="book-header">
+                    <div class="book-title">Bela Maldição — One-shot</div>
+
+                    <a href="https://open.spotify.com/playlist/3TzMlJUw1cgpeSwlcczSkZ?si=eccLNHDGRsqGuEg7kGhbWw"
+                       target="_blank"
+                       class="playlist"
+                       title="Playlist oficial no Spotify">
+                        <img src="assets/img/spotify.png" alt="Playlist no Spotify">
+                    </a>
+                </div>
+
+                <div class="book-desc">
+                    História derivada do universo Harry Potter
+                </div>
+
+                <div class="book-tags">
+                    <div>Tags:</div>
+                    <span>Magic-bond — Soulmates — Star-crossed Lovers</span>
+                </div>
+
+                <a href="https://www.wattpad.com/story/405252409-bela-maldi%C3%A7%C3%A3o-one-shot"
+                   target="_blank"
+                   class="book-link">
+                    Ler no Wattpad →
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
