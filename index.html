@@ -174,6 +174,10 @@
         .book-links a {
             margin-left: 5px
         }
+
+        #loading-text,#dots {
+          transition: opacity 0.3s ease;
+        }
     </style>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -197,28 +201,30 @@
           textEl.textContent = texts[textIndex];
         
           setInterval(() => {
-            dotCount = (dotCount % 3) + 1;
-            dotsEl.textContent = ".".repeat(dotCount);
+              dotsEl.textContent = ".".repeat(dotCount);
             
-            if (dotCount === 3) {
-              dotCycles++;
-              
-              if (dotCycles === 2) {
-                dotCycles = 0;
-                textEl.style.opacity = "0";
-                dotsEl.style.opacity = "0";
-                
-                setTimeout(() => {
-                  textIndex = (textIndex + 1) % texts.length;
-                  textEl.textContent = texts[textIndex];
-                  dotCount = 1;
-                  dotsEl.textContent = ".";
-                  textEl.style.opacity = "1";
-                  dotsEl.style.opacity = "1";
-                }, 300);
+              if (dotCount === 3) {
+                dotCycles++;
+            
+                if (dotCycles === 2) {
+                  dotCycles = 0;
+                  textEl.style.opacity = "0";
+                  dotsEl.style.opacity = "0";
+            
+                  setTimeout(() => {
+                    textIndex = (textIndex + 1) % texts.length;
+                    textEl.textContent = texts[textIndex];
+                    dotCount = 1;
+                    dotsEl.textContent = ".";
+                    textEl.style.opacity = "1";
+                    dotsEl.style.opacity = "1";
+                  }, 300);
+                  return;
+                }
               }
-            }
-          }, 500);
+            
+              dotCount = dotCount === 3 ? 1 : dotCount + 1;
+            }, 500);
       });
     </script>
 </head>
