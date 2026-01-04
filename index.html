@@ -175,6 +175,36 @@
             margin-left: 5px
         }
     </style>
+    <script>
+      const texts = [
+        "Escrevendo",
+        "Brincando com os gatos",
+        "Desenhando minhas histórias",
+        "Tendo hiperfocos aleatórios",
+        "Conversando com Ela",
+        "Escutando música",
+        "Criando novos OCs"
+      ];
+    
+      const textEl = document.getElementById("loading-text");
+      const dotsEl = document.getElementById("dots");
+    
+      let textIndex = 0;
+      let dotCount = 1;
+    
+      textEl.textContent = texts[textIndex];
+    
+      setInterval(() => {
+        dotCount = (dotCount % 3) + 1;
+        dotsEl.textContent = ".".repeat(dotCount);
+      }, 500);
+    
+      setInterval(() => {
+        textIndex = (textIndex + 1) % texts.length;
+        textEl.textContent = texts[textIndex];
+      }, 4000);
+    </script>
+
 </head>
 <body>
     <div class="container">
@@ -182,6 +212,9 @@
         <div class="profile">
             <img src="assets/img/perfil-foto.jpg" alt="Foto de perfil" class="profile-pic">
             <div class="name">Peduardo.</div>
+            <div id="loading">
+              <span id="loading-text"></span><span id="dots">.</span>
+            </div>
         </div>
 
         <div class="social-links">
