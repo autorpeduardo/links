@@ -182,7 +182,7 @@
             "Brincando com os gatos",
             "Desenhando minhas histórias",
             "Tendo hiperfocos aleatórios",
-            "Conversando com Ela",
+            "Conversando com Ela ☀️",
             "Escutando música",
             "Criando novos OCs"
           ];
@@ -206,18 +206,21 @@
               if (dotCycles === 2) {
                 dotCycles = 0;
                 textEl.style.opacity = "0";
+                dotsEl.style.opacity = "0";
                 
                 setTimeout(() => {
                   textIndex = (textIndex + 1) % texts.length;
                   textEl.textContent = texts[textIndex];
+                  dotCount = 1;
+                  dotsEl.textContent = ".";
                   textEl.style.opacity = "1";
+                  dotsEl.style.opacity = "1";
                 }, 300);
               }
             }
           }, 500);
       });
     </script>
-
 </head>
 <body>
     <div class="container">
