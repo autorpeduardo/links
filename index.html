@@ -10,7 +10,6 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/perfil-foto.png">
     <title>Peduardo. - Links</title>
     <style>
-        
         * {
             margin: 0;
             padding: 0;
@@ -19,12 +18,12 @@
 
         body {
             background-color: #faf6f0;
-            font-family: 'Nunito';
+            font-family: 'Nunito', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 30px;
         }
 
         .container {
@@ -32,16 +31,18 @@
             width: 100%;
         }
 
+        /* ── PROFILE ── */
+
         .profile {
             text-align: center;
             margin-bottom: 32px;
         }
 
         .profile-pic {
-            width: 150px;
-            height: 150px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
-            border: 4px solid #b84747;
+            /*border: 4px solid #b84747;*/
             margin-bottom: 16px;
             object-fit: cover;
             background-color: #e0d8cc;
@@ -52,8 +53,10 @@
             font-weight: 600;
             color: #2d2d2d;
             margin-bottom: 24px;
-            font-family: 'Fraunces';
+            font-family: 'Fraunces', serif;
         }
+
+        /* ── SOCIAL ── */
 
         .social-links {
             display: flex;
@@ -88,11 +91,7 @@
             box-shadow: 0 6px 12px rgba(110, 40, 48, 0.3);
         }
 
-        .book-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        /* ── BOOK CARD ── */
 
         .book-card {
             background-color: white;
@@ -101,10 +100,11 @@
             padding: 20px;
             display: flex;
             gap: 16px;
-            text-decoration: none;
             color: inherit;
             transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin: 20px 0;
+            cursor: pointer;
         }
 
         .book-card:hover {
@@ -115,198 +115,635 @@
         .book-cover {
             width: 100px;
             border-radius: 8px;
-            color: #faf6f0;
-            font-size: 12px;
-            text-align: center;
+            overflow: hidden;
+            flex-shrink: 0;
         }
+
         .book-cover img {
             width: 100%;
+            display: block;
+            border-radius: 8px;
         }
 
         .book-info {
             flex: 1;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+
+        .book-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .book-title {
+            font-family: 'Fraunces', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d2d2d;
+        }
+
+        .book-subtitle {
+            font-size: 0.9em;
+            color: #888;
+            margin-top: 2px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .book-tags {
+            font-size: 0.8em;
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 70%;
+            gap: 4px;
+        }
+
+        .book-tag {
+            color: white;
+            padding: 3px 6px;
+            border-radius: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .playlist img {
             width: 25px;
             height: 25px;
+            margin-top: -15px;
         }
 
-        .book-title {
-            font-size: 18px;
+        .playlist.desativada {
+            opacity: 0.4;
+            filter: grayscale(1);
+            pointer-events: none;
+        }
+
+        /* ── LOADING TEXT ── */
+
+        #loading-text, #dots {
+            transition: opacity 0.3s ease;
+        }
+
+        /* ── MODAL OVERLAY ── */
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(20, 15, 10, 0.72);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* ── MODAL ── */
+
+        .modal {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 20px;
+            background: #faf6f0;
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.45);
+            transform: translateY(28px) scale(0.96);
+            transition: transform 0.32s cubic-bezier(0.34, 1.4, 0.64, 1);
+            scrollbar-width: none;
+        }
+
+        .modal::-webkit-scrollbar { display: none; }
+
+        .modal-overlay.open .modal {
+            transform: translateY(0) scale(1);
+        }
+
+        /* ── MODAL BANNER ── */
+
+        .modal-banner {
+            position: relative;
+            width: 100%;
+            height: 190px;
+            overflow: hidden;
+            background: #1a3a38;
+        }
+
+        .modal-banner-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(3px) brightness(0.6);
+            transform: scale(1.15);
+        }
+
+        .modal-banner-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 20%, rgba(15, 10, 8, 0.65) 100%);
+        }
+
+        .modal-banner-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: flex-end;
+            gap: 16px;
+            padding: 20px;
+            height: 100%;
+        }
+
+        .modal-cover-float {
+            height: 130px;
+            border-radius: 10px;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+
+        .modal-title-over h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 22px;
             font-weight: 600;
-            color: #2d2d2d;
-            margin-bottom: 8px;
+            color: white;
+            margin: 0 0 4px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+            line-height: 1.2;
         }
 
-        .book-link {
-            font-size: 14px;
-            color: #b84747;
-            font-weight: 500;
-            margin-top: auto;
-            align-self: flex-end;
-            border: 1px solid #cbcbcb;
-            text-decoration: none;
-            padding: 4px 10px;
+        .modal-title-over p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0;
+        }
+
+        /* ── MODAL CLOSE ── */
+
+        .modal-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            z-index: 10;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.32);
+        }
+
+        /* ── MODAL BODY ── */
+
+        .modal-body {
+            padding: 20px 22px 26px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
+
+        .modal-tag {
+            font-size: 12px;
+            color: white;
+            padding: 4px 9px;
             border-radius: 10px;
         }
 
-        .book-link:hover {
-            background-color: #b84747;
-            color: white;
-        }
-
-        .book-desc, .book-tags {
+        .modal-section-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #b84747;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
             margin-bottom: 8px;
         }
 
-        .book-tags {
-            font-size: smaller;
+        .modal-synopsis {
+            font-size: 14px;
+            color: #3a3028;
+            line-height: 1.7;
+            margin-bottom: 22px;
+            text-align: justify;
+            white-space: pre-line;
         }
 
-        .book-links {
+        .modal-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-top: 1px solid rgba(180, 140, 110, 0.22);
+            padding-top: 18px;
+            justify-content: space-between;
+        }
+
+        .modal-actions-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .modal-btn {
             display: inline-flex;
-            justify-content: flex-end;
-            padding-top: 20px;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 14px;
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #cbcbcb;
+            background: white;
+            color: #2d2d2d;
+            transition: transform 0.15s, box-shadow 0.15s;
         }
 
-        .book-links a {
-            margin-left: 5px
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
         }
 
-        #loading-text,#dots {
-          transition: opacity 0.3s ease;
+        .modal-btn.spotify {
+            color: white;
+            border-color: #1DB954;
+        }
+
+        .modal-btn.spotify:hover {
+            background: #18a34a;
+        }
+
+        .modal-btn.disabled {
+            opacity: 0.4;
+            filter: grayscale(1);
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .modal-btn img {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+        }
+
+        .cover-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+            padding: 40px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            cursor: zoom-out;
+        }
+
+        .cover-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .cover-overlay img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 12px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+            object-fit: contain;
+        }
+
+        @media (max-width: 768px) {
+            .book-tags {
+                max-width: 100%;
+            }
+
+            .book-tag {
+                max-width: 100px;
+            }
+
+            .modal-tags {
+                max-width: 80%;
+            }
         }
     </style>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-          const texts = [
-            "Trabalhando no meu livro",
-            "Brincando com os gatos",
-            "Escrevendo",
-            "Tendo hiperfocos aleatórios",
-            "Desenhando",
-            "Conversando com Ela ☀️",
-            "Escutando música",
-            "BAT!",
-            "Criando novos OCs",
-            "Iniciando mais projetos",
-            "2 + 2 = 5"
-          ];
-        
-          const textEl = document.getElementById("loading-text");
-          const dotsEl = document.getElementById("dots");
-        
-          let textIndex = 0;
-          let dotCount = 1;
-          let dotCycles = 0;
-        
-          textEl.textContent = texts[textIndex];
-        
-          setInterval(() => {
-              dotsEl.textContent = ".".repeat(dotCount);
-            
-              if (dotCount === 3) {
-                dotCycles++;
-            
-                if (dotCycles === 2) {
-                  dotCycles = 0;
-                  textEl.style.opacity = "0";
-                  dotsEl.style.opacity = "0";
-            
-                  setTimeout(() => {
-                    textIndex = (textIndex + 1) % texts.length;
-                    textEl.textContent = texts[textIndex];
-                    dotCount = 1;
-                    dotsEl.textContent = ".";
-                    textEl.style.opacity = "1";
-                    dotsEl.style.opacity = "1";
-                  }, 300);
-                  return;
-                }
-              }
-            
-              dotCount = dotCount === 3 ? 1 : dotCount + 1;
-            }, 500);
-      });
-    </script>
 </head>
 <body>
+
     <div class="container">
 
         <div class="profile">
             <img src="assets/img/perfil-foto.png" alt="Foto de perfil" class="profile-pic">
             <div class="name">Peduardo.</div>
             <div id="loading">
-              <span id="loading-text"></span><span id="dots">.</span>
+                <span id="loading-text"></span><span id="dots">.</span>
             </div>
         </div>
 
         <div class="social-links">
             <a href="https://instagram.com/autorpeduardo" target="_blank" class="social-circle" title="Instagram">
-                <img src="assets/img/insta.png" alt="Instagram do Peduardo">
+                <img src="assets/img/insta.png" alt="Instagram">
             </a>
-
             <a href="https://tiktok.com/@autorpeduardo" target="_blank" class="social-circle" title="TikTok">
-                <img src="assets/img/tkk.png" alt="TikTok do Peduardo">
+                <img src="assets/img/tkk.png" alt="TikTok">
             </a>
-
-            <a href="https://wattpad.com/user/autorpeduardo" target="_blank" class="social-circle" title="Wattpad">
-                <img src="assets/img/wattpad.png" alt="Wattpad do Peduardo">
+            <a href="https://behance.net/autorpeduardo" target="_blank" class="social-circle" title="Behance">
+                <img src="assets/img/beha.png" alt="Portifólio no Behance">
             </a>
-
-            <a href="https://archiveofourown.org/users/peduardo" target="_blank" class="social-circle" title="AO3">
-                <img src="assets/img/ao3.png" alt="AO3 do Peduardo">
+            <a href="#" id="link-compartilhar" class="social-circle" title="Compartilhar">
+                <img src="assets/img/share.png" alt="Botão de Compartilhar">
             </a>
         </div>
 
-        <div class="book-card">
-
-            <div class="book-cover">
-                <img src="assets/obras/Capa-BelaMaldição.jpg" alt="Capa do livro Bela Maldição">
-            </div>
-
-            <div class="book-info">
-
-                <div class="book-header">
-                    <div class="book-title">Bela Maldição — One-shot</div>
-
-                    <a href="https://open.spotify.com/playlist/3TzMlJUw1cgpeSwlcczSkZ?si=eccLNHDGRsqGuEg7kGhbWw"
-                       target="_blank"
-                       class="playlist"
-                       title="Playlist oficial no Spotify">
-                        <img src="assets/img/spotify.png" alt="Playlist no Spotify">
-                    </a>
-                </div>
-
-                <div class="book-desc">
-                    História derivada do universo Harry Potter
-                </div>
-
-                <div class="book-tags">
-                    <div>Tags:</div>
-                    <span>Magic-bond — Soulmates — Star-crossed Lovers</span>
-                </div>
-
-                <div class="book-links"> 
-                    <a href="https://www.wattpad.com/story/405252409-bela-maldi%C3%A7%C3%A3o-one-shot"
-                       target="_blank"
-                       class="book-link">
-                        Wattpad →
-                    </a>
-    
-                    <a href="https://archiveofourown.org/works/76299436"
-                       target="_blank"
-                       class="book-link">
-                        AO3 →
-                    </a>
-                </div>
-
-            </div>
-        </div>
+        <div id="books-container"></div>
 
     </div>
+
+    <!-- ── MODAL ── -->
+    <div class="modal-overlay" id="modal-overlay" aria-modal="true" role="dialog" aria-label="Detalhes do livro">
+        <div class="modal" id="modal">
+            <button class="modal-close" id="modal-close" aria-label="Fechar">✕</button>
+
+            <div class="modal-banner">
+                <img class="modal-banner-bg" id="modal-banner-bg" src="" alt="">
+                <div class="modal-banner-gradient"></div>
+                <div class="modal-banner-content">
+                    <img class="modal-cover-float" id="modal-cover" src="" alt="">
+                    <div class="modal-title-over">
+                        <h2 id="modal-title"></h2>
+                        <p id="modal-subtitle"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="modal-tags" id="modal-tags"></div>
+                <div class="modal-section-label">Sinopse</div>
+                <div class="modal-synopsis" id="modal-synopsis"></div>
+                <div class="modal-actions" id="modal-actions"></div>
+            </div>
+        </div>
+
+        <div class="cover-overlay" id="cover-overlay">
+            <img id="cover-preview" src="" alt="">
+        </div>
+    </div>
+
+    <script>
+    /* ── DADOS ── */
+
+    const BOOKS = [
+        {
+            key: 'tino',
+            title: 'TINO',
+            subtitle: 'e o Livro do Necromante',
+            cover: 'assets/obras/Capa-TINO.jpg',
+            tags: [
+                { label: '#Original',         color: '#b84747' },
+                { label: '#Amadurecimento',    color: '#c68436' },
+                { label: '#Superação do luto', color: '#227d80' },
+                { label: '#Fantasia',          color: '#2e8b57' }
+            ],
+            synopsis: 'Abe é um garoto de argila que quer reviver seu cachorro com um ritual mágico, mas precisa da ajuda de uma demônia chamada Matilda.\n\nEm uma das tentativas para distraí-lo, o garoto ganhou um livro de invocações da sua avó. Era um presente disfarçado de "ficção mágica", que havia pertencido a um necromante desconhecido.\n\nEsta é uma aventura sobre amadurecimento, luto e a busca pelos cinco ingredientes necessários do ritual. Onde Abe e Matilda descobrem uma amizade num contrato, e quebram tudo para contrariar a própria Morte.',
+            spotify: '',
+            links: [
+                { label: 'Amazon Kindle', url: 'https://www.amazon.com.br/dp/B0H6ZJ2M8V' }
+            ]
+        },
+        {
+            key: 'bela-maldicao',
+            title: 'Bela Maldição',
+            subtitle: 'One-shot',
+            cover: 'assets/obras/Capa-BelaMaldição.jpg',
+            tags: [
+                { label: '#História derivada',  color: '#c46b6b' },
+                { label: '#Magic-bond',          color: '#7209b7' },
+                { label: '#Soulmates',           color: '#9d8189' },
+                { label: '#Star-crossed Lovers', color: '#641220' }
+            ],
+            synopsis: 'Desde que virou auror, Nolan investiga um tipo de crimes mágicos cada vez mais frequentes, que possuem uma ligação com a temida Arte das Trevas.\n\nO aumento desses casos nas últimas semanas aponta para uma nova ascensão do Mal, ameaçando tudo que ele jurou proteger.\n\nEnquanto busca descobrir a verdade e impedir esse poder desconhecido, também tenta recuperar o contato com uma velha amiga de escola, que quase virou auror ao lado dele.',
+            spotify: 'https://open.spotify.com/playlist/3TzMlJUw1cgpeSwlcczSkZ?si=eccLNHDGRsqGuEg7kGhbWw',
+            links: [
+                { label: 'Wattpad', url: 'https://www.wattpad.com/story/405252409-bela-maldi%C3%A7%C3%A3o-one-shot' },
+                { label: 'AO3',     url: 'https://archiveofourown.org/works/76299436' }
+            ]
+        }
+    ];
+
+    /* ── RENDER CARDS ── */
+
+    function renderCards() {
+        const container = document.getElementById('books-container');
+
+        container.innerHTML = BOOKS.map(book => {
+            const tagsHTML = book.tags
+                .map(t => `<div class="book-tag" style="background:${t.color}">${t.label}</div>`)
+                .join('');
+
+            const spotifyClass = book.spotify ? 'playlist' : 'playlist desativada';
+            const spotifyTitle = book.spotify ? 'Playlist oficial no Spotify' : 'Sem playlist no Spotify';
+
+            return `
+            <div class="book-card" data-book="${book.key}">
+                <div class="book-cover">
+                    <img src="${book.cover}" alt="Capa de ${book.title}">
+                </div>
+                <div class="book-info">
+                    <div class="book-header">
+                        <div>
+                            <div class="book-title">${book.title}</div>
+                            <div class="book-subtitle">${book.subtitle}</div>
+                        </div>
+                        <div class="${spotifyClass}" title="${spotifyTitle}">
+                            <img src="assets/img/spotify.png" alt="Spotify">
+                        </div>
+                    </div>
+                    <div class="book-tags">${tagsHTML}</div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    /* ── MODAL ── */
+
+    function openModal(key, { overlay, modal, btnClose, coverOverlay }) {
+        const book = BOOKS.find(b => b.key === key);
+        if (!book) return;
+
+        const bg    = document.getElementById('modal-banner-bg');
+        const cover = document.getElementById('modal-cover');
+        bg.src    = book.cover;
+        bg.alt    = book.title;
+        cover.src = book.cover;
+        cover.alt = 'Capa de ' + book.title;
+
+        document.getElementById('modal-title').textContent    = book.title;
+        document.getElementById('modal-subtitle').textContent = book.subtitle;
+        document.getElementById('modal-synopsis').textContent = book.synopsis;
+
+        document.getElementById('modal-tags').innerHTML = book.tags
+            .map(t => `<span class="modal-tag" style="background:${t.color}">${t.label}</span>`)
+            .join('');
+
+        const spotifyBtn = book.spotify
+            ? `<a href="${book.spotify}" target="_blank" rel="noopener" class="modal-btn spotify">
+                   <img src="assets/img/spotify.png" alt="Spotify">
+               </a>`
+            : `<span class="modal-btn spotify disabled">
+                   <img src="assets/img/spotify.png" alt="Spotify">
+               </span>`;
+
+        const linksHTML = book.links
+            .map(l => `<a href="${l.url}" target="_blank" rel="noopener" class="modal-btn">${l.label}</a>`)
+            .join('');
+
+        document.getElementById('modal-actions').innerHTML =
+            `${spotifyBtn}<div class="modal-actions-links">${linksHTML}</div>`;
+
+        /* cover preview */
+        cover.style.cursor = 'zoom-in';
+        cover.onclick = () => {
+            document.getElementById('cover-preview').src = book.cover;
+            modal.style.opacity = '0';
+            coverOverlay.classList.add('open');
+        };
+
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        btnClose.focus();
+    }
+
+    function closeModal(overlay) {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    /* ── INIT ── */
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderCards();
+
+        const overlay      = document.getElementById('modal-overlay');
+        const modal        = document.getElementById('modal');
+        const btnClose     = document.getElementById('modal-close');
+        const coverOverlay = document.getElementById('cover-overlay');
+        const els          = { overlay, modal, btnClose, coverOverlay };
+
+        /* fechar cover preview */
+        coverOverlay.addEventListener('click', () => {
+            coverOverlay.classList.remove('open');
+            modal.style.opacity = '1';
+        });
+
+        /* abrir modal via clique no card */
+        document.addEventListener('click', e => {
+            const card = e.target.closest('[data-book]');
+            if (card) {
+                e.preventDefault();
+                openModal(card.dataset.book, els);
+                return;
+            }
+            if (e.target === overlay) closeModal(overlay);
+        });
+
+        btnClose.addEventListener('click', () => closeModal(overlay));
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(overlay); });
+
+        /* ── LOADING TEXT ── */
+
+        const texts = [
+            'Brincando com os gatos',
+            'Escrevendo',
+            'Tendo hiperfocos aleatórios',
+            'Conversando com Ela ☀️',
+            'Trabalhando no meu livro',
+            'Desenhando',
+            'Escutando música',
+            'BAT!',
+            'Criando novos OCs',
+            'Iniciando mais projetos',
+            '2 + 2 = 5'
+        ];
+
+        const textEl = document.getElementById('loading-text');
+        const dotsEl = document.getElementById('dots');
+        let textIndex = 0, dotCount = 1, dotCycles = 0;
+        textEl.textContent = texts[textIndex];
+
+        setInterval(() => {
+            dotsEl.textContent = '.'.repeat(dotCount);
+            if (dotCount === 3) {
+                dotCycles++;
+                if (dotCycles === 2) {
+                    dotCycles = 0;
+                    textEl.style.opacity = '0';
+                    dotsEl.style.opacity = '0';
+                    setTimeout(() => {
+                        textIndex = (textIndex + 1) % texts.length;
+                        textEl.textContent = texts[textIndex];
+                        dotCount = 1;
+                        dotsEl.textContent = '.';
+                        textEl.style.opacity = '1';
+                        dotsEl.style.opacity = '1';
+                    }, 300);
+                    return;
+                }
+            }
+            dotCount = dotCount === 3 ? 1 : dotCount + 1;
+        }, 500);
+
+        /* ── COMPARTILHAR ── */
+
+        document.getElementById('link-compartilhar').addEventListener('click', async e => {
+            e.preventDefault();
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'Peduardo. - Links',
+                        text: 'Dá uma olhada nesse autor gente boa que eu encontrei!',
+                        url: window.location.href
+                    });
+                } catch (err) {
+                    console.log('Compartilhamento cancelado:', err);
+                }
+            } else {
+                alert('Copie o link para compartilhar: ' + window.location.href);
+            }
+        });
+    });
+</script>
 </body>
 </html>
