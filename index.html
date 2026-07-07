@@ -487,16 +487,40 @@
         </div>
 
         <div class="social-links">
-            <a href="https://instagram.com/autorpeduardo" target="_blank" class="social-circle" title="Instagram">
+            <a
+                href="https://instagram.com/autorpeduardo"
+                target="_blank"
+                class="social-circle"
+                data-event="social_click"
+                data-network="instagram"
+                title="Instagram">
                 <img src="assets/img/insta.png" alt="Instagram">
             </a>
-            <a href="https://tiktok.com/@autorpeduardo" target="_blank" class="social-circle" title="TikTok">
+            <a
+                href="https://tiktok.com/@autorpeduardo"
+                target="_blank"
+                class="social-circle"
+                data-event="social_click"
+                data-network="tiktok"
+                title="TikTok">
                 <img src="assets/img/tkk.png" alt="TikTok">
             </a>
-            <a href="https://behance.net/autorpeduardo" target="_blank" class="social-circle" title="Behance">
+            <a
+                href="https://behance.net/autorpeduardo"
+                target="_blank"
+                class="social-circle"
+                data-event="social_click"
+                data-network="behance"
+                title="Behance">
                 <img src="assets/img/beha.png" alt="Portifólio no Behance">
             </a>
-            <a href="#" id="link-compartilhar" class="social-circle" title="Compartilhar">
+            <a
+                href="#"
+                id="link-compartilhar"
+                class="social-circle"
+                data-event="social_click"
+                data-network="share"
+                title="Compartilhar">
                 <img src="assets/img/share.png" alt="Botão de Compartilhar">
             </a>
         </div>
@@ -590,7 +614,11 @@
             const spotifyTitle = book.spotify ? 'Playlist oficial no Spotify' : 'Sem playlist no Spotify';
 
             return `
-            <div class="book-card" data-book="${book.key}">
+            <div
+            class="book-card"
+            data-event="book_open"
+            data-book="${book.key}"
+            data-book-title="${book.title}">
                 <div class="book-cover">
                     <img src="${book.cover}" alt="Capa de ${book.title}">
                 </div>
@@ -632,7 +660,14 @@
             .join('');
 
         const spotifyBtn = book.spotify
-            ? `<a href="${book.spotify}" target="_blank" rel="noopener" class="modal-btn spotify">
+            ? `<a
+                href="${book.spotify}"
+                target="_blank"
+                rel="noopener"
+                class="modal-btn spotify"
+                data-event="playlist"
+                data-book="${book.key}"
+                data-book-title="${book.title}">
                    <img src="assets/img/spotify.png" alt="Spotify">
                </a>`
             : `<span class="modal-btn spotify disabled">
@@ -640,8 +675,20 @@
                </span>`;
 
         const linksHTML = book.links
-            .map(l => `<a href="${l.url}" target="_blank" rel="noopener" class="modal-btn">${l.label}</a>`)
-            .join('');
+        .map(l => `
+            <a
+                href="${l.url}"
+                target="_blank"
+                rel="noopener"
+                class="modal-btn"
+                data-event="book_link"
+                data-book="${book.key}"
+                data-book-title="${book.title}"
+                data-destination="${l.label}">
+                ${l.label}
+            </a>
+        `)
+        .join('');
 
         document.getElementById('modal-actions').innerHTML =
             `${spotifyBtn}<div class="modal-actions-links">${linksHTML}</div>`;
