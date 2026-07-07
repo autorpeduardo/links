@@ -11,6 +11,7 @@
     <title>Peduardo. - Links</title>
 
     <!-- Google Tag Manager -->
+    <script>window.dataLayer = window.dataLayer || [];</script>
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -600,6 +601,14 @@
         }
     ];
 
+    /* ── DATALAYER ── */
+
+    window.dataLayer = window.dataLayer || [];
+
+    function pushEvent(event, params) {
+        window.dataLayer.push({ event, ...params });
+    }
+
     /* ── RENDER CARDS ── */
 
     function renderCards() {
@@ -614,11 +623,7 @@
             const spotifyTitle = book.spotify ? 'Playlist oficial no Spotify' : 'Sem playlist no Spotify';
 
             return `
-            <div
-            class="book-card"
-            data-event="book_open"
-            data-book="${book.key}"
-            data-book-title="${book.title}">
+            <div class="book-card" data-book="${book.key}">
                 <div class="book-cover">
                     <img src="${book.cover}" alt="Capa de ${book.title}">
                 </div>
@@ -640,7 +645,7 @@
 
     /* ── MODAL ── */
 
-    function openModal(key, { overlay, modal, btnClose, coverOverlay }) {
+    function openModal(key, { overlay, btnClose, coverOverlay }) {
         const book = BOOKS.find(b => b.key === key);
         if (!book) return;
 
@@ -660,14 +665,7 @@
             .join('');
 
         const spotifyBtn = book.spotify
-            ? `<a
-                href="${book.spotify}"
-                target="_blank"
-                rel="noopener"
-                class="modal-btn spotify"
-                data-event="playlist"
-                data-book="${book.key}"
-                data-book-title="${book.title}">
+            ? `<a href="${book.spotify}" target="_blank" rel="noopener" class="modal-btn spotify" data-playlist="${book.key}">
                    <img src="assets/img/spotify.png" alt="Spotify">
                </a>`
             : `<span class="modal-btn spotify disabled">
@@ -675,20 +673,8 @@
                </span>`;
 
         const linksHTML = book.links
-        .map(l => `
-            <a
-                href="${l.url}"
-                target="_blank"
-                rel="noopener"
-                class="modal-btn"
-                data-event="book_link"
-                data-book="${book.key}"
-                data-book-title="${book.title}"
-                data-destination="${l.label}">
-                ${l.label}
-            </a>
-        `)
-        .join('');
+            .map(l => `<a href="${l.url}" target="_blank" rel="noopener" class="modal-btn" data-link="${book.key}" data-destination="${l.label}">${l.label}</a>`)
+            .join('');
 
         document.getElementById('modal-actions').innerHTML =
             `${spotifyBtn}<div class="modal-actions-links">${linksHTML}</div>`;
@@ -697,9 +683,14 @@
         cover.style.cursor = 'zoom-in';
         cover.onclick = () => {
             document.getElementById('cover-preview').src = book.cover;
-            modal.style.opacity = '0';
             coverOverlay.classList.add('open');
         };
+
+        /* evento: modal aberto */
+        pushEvent('book_open', {
+            book_key:   book.key,
+            book_title: book.title
+        });
 
         overlay.classList.add('open');
         document.body.style.overflow = 'hidden';
@@ -717,26 +708,58 @@
         renderCards();
 
         const overlay      = document.getElementById('modal-overlay');
-        const modal        = document.getElementById('modal');
         const btnClose     = document.getElementById('modal-close');
         const coverOverlay = document.getElementById('cover-overlay');
-        const els          = { overlay, modal, btnClose, coverOverlay };
+        const els          = { overlay, btnClose, coverOverlay };
 
         /* fechar cover preview */
         coverOverlay.addEventListener('click', () => {
             coverOverlay.classList.remove('open');
-            modal.style.opacity = '1';
         });
 
-        /* abrir modal via clique no card */
+        /* delegação geral de cliques */
         document.addEventListener('click', e => {
+
+            /* abrir modal */
             const card = e.target.closest('[data-book]');
-            if (card) {
+            if (card && card.classList.contains('book-card')) {
                 e.preventDefault();
                 openModal(card.dataset.book, els);
                 return;
             }
-            if (e.target === overlay) closeModal(overlay);
+
+            /* fechar modal clicando no overlay */
+            if (e.target === overlay) {
+                closeModal(overlay);
+                return;
+            }
+
+            /* clique em link de livro */
+            const bookLink = e.target.closest('[data-link]');
+            if (bookLink) {
+                pushEvent('book_link', {
+                    book_key:    bookLink.dataset.link,
+                    destination: bookLink.dataset.destination
+                });
+                return;
+            }
+
+            /* clique na playlist */
+            const playlistBtn = e.target.closest('[data-playlist]');
+            if (playlistBtn) {
+                pushEvent('playlist_click', {
+                    book_key: playlistBtn.dataset.playlist
+                });
+                return;
+            }
+
+            /* clique em rede social */
+            const social = e.target.closest('[data-network]');
+            if (social) {
+                pushEvent('social_click', {
+                    network: social.dataset.network
+                });
+            }
         });
 
         btnClose.addEventListener('click', () => closeModal(overlay));
@@ -789,6 +812,7 @@
 
         document.getElementById('link-compartilhar').addEventListener('click', async e => {
             e.preventDefault();
+            pushEvent('social_click', { network: 'share' });
             if (navigator.share) {
                 try {
                     await navigator.share({
